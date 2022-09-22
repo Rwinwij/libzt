@@ -106,7 +106,17 @@ impl ZeroTierNode {
         unsafe { zts_util_delay(interval_ms) }
     }
 
-    pub fn addr_get(&self, net_id: u64) -> Result<IpAddr, AddrParseError> {
+    pub fn get_ipv4_addr(&self, net_id: u64) -> Result<IpAddr, AddrParseError> {
+        unsafe {
+            let mut v = vec![0; (ZTS_INET6_ADDRSTRLEN as usize) + 1];
+            let ptr = v.as_mut_ptr() as *mut i8;
+            zts_addr_get_str(net_id, ZTS_AF_INET, ptr, ZTS_INET_ADDRSTRLEN);
+            let c_str = CStr::from_ptr(ptr);
+            return IpAddr::from_str(&c_str.to_string_lossy().into_owned());
+        }
+    }
+    
+    pub fn get_ipv6_addr(&self, net_id: u64) -> Result<IpAddr, AddrParseError> {
         unsafe {
             let mut v = vec![0; (ZTS_INET6_ADDRSTRLEN as usize) + 1];
             let ptr = v.as_mut_ptr() as *mut i8;
