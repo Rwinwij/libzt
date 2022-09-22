@@ -110,7 +110,7 @@ impl ZeroTierNode {
         unsafe {
             let mut v = vec![0; (ZTS_INET6_ADDRSTRLEN as usize) + 1];
             let ptr = v.as_mut_ptr() as *mut i8;
-            zts_addr_get_str(net_id, ZTS_AF_INET, ptr, ZTS_INET6_ADDRSTRLEN);
+            zts_addr_get_str(net_id, ZTS_AF_INET6, ptr, ZTS_INET6_ADDRSTRLEN);
             let c_str = CStr::from_ptr(ptr);
             return IpAddr::from_str(&c_str.to_string_lossy().into_owned());
         }
