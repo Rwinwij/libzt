@@ -69,7 +69,7 @@ fn main() -> std::io::Result<()> {
     while !node.net_transport_is_ready(net_id) {
         node.delay(50);
     }
-    let addr = node.addr_get(net_id).unwrap();
+    let addr = node.get_ipv4_addr(net_id).unwrap();
     println!("Assigned addr = {}", addr);
 
     // Server

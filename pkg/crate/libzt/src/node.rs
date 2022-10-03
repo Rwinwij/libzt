@@ -108,9 +108,9 @@ impl ZeroTierNode {
 
     pub fn get_ipv4_addr(&self, net_id: u64) -> Result<IpAddr, AddrParseError> {
         unsafe {
-            let mut v = vec![0; (ZTS_INET_ADDRSTRLEN as usize) + 1];
+            let mut v = vec![0; (ZTS_IP_MAX_STR_LEN as usize) + 1];
             let ptr = v.as_mut_ptr() as *mut i8;
-            zts_addr_get_str(net_id, ZTS_AF_INET, ptr, ZTS_INET_ADDRSTRLEN);
+            zts_addr_get_str(net_id, ZTS_AF_INET, ptr, ZTS_IP_MAX_STR_LEN);
             let c_str = CStr::from_ptr(ptr);
             return IpAddr::from_str(&c_str.to_string_lossy().into_owned());
         }
